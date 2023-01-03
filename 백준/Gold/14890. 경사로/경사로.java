@@ -33,9 +33,7 @@ public class Main {
                 result++;
             }
         }
-
         
-
         System.out.println(result);
     }
 
@@ -107,6 +105,5 @@ public class Main {
         }
         return true;
     }
-
 
 }
