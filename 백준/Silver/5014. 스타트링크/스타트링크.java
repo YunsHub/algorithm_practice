@@ -1,13 +1,15 @@
+import com.sun.org.apache.xpath.internal.objects.XBoolean;
+import sun.awt.image.ImageWatched;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
     static int F, S, G, U, D;
-    static int result;
-    static int[] visited;
-    static boolean check;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -18,38 +20,40 @@ public class Main {
         G = Integer.parseInt(st.nextToken());
         U = Integer.parseInt(st.nextToken());
         D = Integer.parseInt(st.nextToken());
-        visited = new int[F + 1];
-        Arrays.fill(visited, Integer.MAX_VALUE);
-        result = Integer.MAX_VALUE;
 
-        dfs(S, 0);
-
-        if(check) {
-            System.out.println(result);
-        } else{
-            System.out.println("use the stairs");
-        }
-
+        int res = bfs();
+        System.out.println((res == -1) ? "use the stairs" : res);
     }
 
-    public static void dfs(int now, int count) {
-        if(now == G) {
-            result = Math.min(result, count);
-            check = true;
-            return;
-        }
-        if(visited[now] <= count) {
-            return;
-        }
+    public static int bfs(){
+        int result = -1;
+        Queue<Integer> q = new LinkedList();//층
+        boolean[] visited = new boolean[F+1];
 
-        visited[now] = count;
-        if(now + U <= F){
-            dfs(now + U, count + 1);
-        }
-        if(now - D > 0) {
-            dfs(now - D, count + 1);
-        }
+        q.add(S);
 
+        while(!q.isEmpty()){
+            result++;
+            for(int i=0, size = q.size(); i<size; i++){
+                int next = q.poll();
+                if(next == G){
+                    return result;
+                }
+
+                int up = next + U;
+                if(up <= F && !visited[up]){
+                    visited[up] = true;
+                    q.add(up);
+                }
+                int down = next - D;
+                if(down > 0 && !visited[down]){
+                    visited[down] = true;
+                    q.add(down);
+                }
+
+            }
+        }
+        return -1;
     }
 
 }
