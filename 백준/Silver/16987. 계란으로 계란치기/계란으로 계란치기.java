@@ -23,11 +23,10 @@ public class Main {
     }
 
     public static void simulation(int now, int cnt){
-        if(now == N){
+        if(cnt == N-1 || now == N){
             crackedCnt = Math.max(crackedCnt, cnt);
             return;
         }
-
         if(eggs[now][0] <= 0){//손에 든 계란이 깨졌을 때
             simulation(now + 1, cnt);
         }
@@ -41,26 +40,15 @@ public class Main {
                     cracked = true;
                     eggs[i][0] -= eggs[now][1];
                     eggs[now][0] -= eggs[i][1];
-
                     simulation(now + 1, cnt + (eggs[i][0] <= 0 ? 1 : 0) + (eggs[now][0] <= 0 ? 1 : 0));
-
-//                    if(eggs[i][0] <= 0 && eggs[now][0] <= 0){
-//                            simulation(now + 1, cnt + 2);
-//                    }
-//                    else if(eggs[i][0] <= 0 || eggs[now][0] <= 0){
-//                        simulation(now + 1, cnt + 1);
-//                    }
-//                    else{
-//                        simulation(now + 1, cnt);
-//                    }
                     eggs[now][0] += eggs[i][1];
                     eggs[i][0] += eggs[now][1];
                 }
             }
 
-            if(!cracked){
-                crackedCnt = Math.max(crackedCnt, N-1);
-            }
+//            if(!cracked){
+//                crackedCnt = Math.max(crackedCnt, N-1);
+//            }
         }
 
 
