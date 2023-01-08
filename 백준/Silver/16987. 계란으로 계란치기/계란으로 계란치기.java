@@ -31,13 +31,11 @@ public class Main {
             simulation(now + 1, cnt);
         }
         else{//손에 든 계란이 안 깨졌을 때
-            boolean cracked = false;
             for (int i=0; i<N; i++){
                 if(i == now){
                     continue;
                 }
                 if(eggs[i][0] > 0) {
-                    cracked = true;
                     eggs[i][0] -= eggs[now][1];
                     eggs[now][0] -= eggs[i][1];
                     simulation(now + 1, cnt + (eggs[i][0] <= 0 ? 1 : 0) + (eggs[now][0] <= 0 ? 1 : 0));
@@ -46,9 +44,6 @@ public class Main {
                 }
             }
 
-//            if(!cracked){
-//                crackedCnt = Math.max(crackedCnt, N-1);
-//            }
         }
 
 
