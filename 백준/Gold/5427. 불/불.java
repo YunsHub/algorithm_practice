@@ -1,5 +1,3 @@
-import sun.awt.image.ImageWatched;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
@@ -56,7 +54,7 @@ public class Main {
                 for(int j=0; j<4; j++){
                     int nx = now[0] + dx[j];
                     int ny = now[1] + dy[j];
-                    if(nx < 0 || nx >= h || ny < 0 || ny >= w || arr[nx][ny] == '#' || arr[nx][ny] == '*'){continue;}
+                    if(nx < 0 || nx >= h || ny < 0 || ny >= w || arr[nx][ny] != '.'){continue;}
                     arr[nx][ny] = '*';
                     fires.add(new int[]{nx, ny});
                 }
