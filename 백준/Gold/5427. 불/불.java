@@ -9,7 +9,7 @@ public class Main {
     static int[] dx = {1, 0, -1, 0};
     static int[] dy = {0, -1, 0, 1};
     static char[][] arr;
-    static Queue<int[]> fires, sangen;
+    static Queue<int[]> q;
 
 
 
@@ -23,22 +23,25 @@ public class Main {
             w = Integer.parseInt(st.nextToken());
             h = Integer.parseInt(st.nextToken());
             arr = new char[h][w];
-            fires = new LinkedList<>();
-            sangen = new LinkedList<>();
+            q = new LinkedList<>();
             result = 0;
+
+            int x = 0, y = 0;
 
             for(int i = 0; i < h; i++) {
                 String str = br.readLine();
                 for(int j = 0; j < w; j++) {
                     arr[i][j] = str.charAt(j);
-                    if(arr[i][j] == '@'){
-                        sangen.add(new int[]{i, j});
+                    if(arr[i][j] == '*'){
+                        q.add(new int[]{i, j});
                     }
-                    else if(arr[i][j] == '*'){
-                        fires.add(new int[]{i, j});
+                    else if(arr[i][j] == '@'){
+                        x = i;
+                        y = j;
                     }
                 }
             }
+            q.add(new int[]{x, y});
             sb.append(simulation() ? result : "IMPOSSIBLE").append("\n");
         }
         System.out.println(sb);
@@ -46,29 +49,22 @@ public class Main {
     }
 
     public static boolean simulation() {
-        while(!sangen.isEmpty()){
+        while(!q.isEmpty()){
             result++;
-            //1. 불 지르기
-            for(int i=0, size = fires.size(); i<size; i++){
-                int[] now = fires.poll();
+            for(int i=0, size = q.size(); i<size; i++){
+                int[] now = q.poll();
                 for(int j=0; j<4; j++){
                     int nx = now[0] + dx[j];
                     int ny = now[1] + dy[j];
-                    if(nx < 0 || nx >= h || ny < 0 || ny >= w || arr[nx][ny] != '.'){continue;}
-                    arr[nx][ny] = '*';
-                    fires.add(new int[]{nx, ny});
-                }
-            }
-            //2. 상근이 이동 경우의 수 모두 구하기
-            for(int i=0, size = sangen.size(); i<size; i++){
-                int[] now = sangen.poll();
-                for(int j=0; j<4; j++){
-                    int nx = now[0] + dx[j];
-                    int ny = now[1] + dy[j];
-                    if(nx < 0 || nx >= h || ny < 0 || ny >= w){ return true;}
-                    if(arr[nx][ny] != '.'){ continue;}
-                    arr[nx][ny] = '@';
-                    sangen.add(new int[]{nx, ny});
+                    if(nx < 0 || nx >= h || ny < 0 || ny >= w){
+                        if(arr[now[0]][now[1]] == '@'){
+                            return true;
+                        }
+                        continue;
+                    }
+                    if(arr[nx][ny] != '.'){continue;}
+                    arr[nx][ny] = arr[now[0]][now[1]];
+                    q.add(new int[]{nx, ny});
                 }
             }
         }
