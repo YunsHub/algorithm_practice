@@ -11,8 +11,6 @@ public class Main {
     static int[] dx = {1, 0, -1, 0};
     static int[] dy = {0, -1, 0, 1};
     static char[][] arr;
-    static boolean[][] visited;
-
     static Queue<int[]> fires, sangen;
 
 
@@ -27,7 +25,6 @@ public class Main {
             w = Integer.parseInt(st.nextToken());
             h = Integer.parseInt(st.nextToken());
             arr = new char[h][w];
-            visited = new boolean[h][w];
             fires = new LinkedList<>();
             sangen = new LinkedList<>();
             result = 0;
@@ -37,8 +34,6 @@ public class Main {
                 for(int j = 0; j < w; j++) {
                     arr[i][j] = str.charAt(j);
                     if(arr[i][j] == '@'){
-                        arr[i][j] = '.';
-                        visited[i][j] = true;
                         sangen.add(new int[]{i, j});
                     }
                     else if(arr[i][j] == '*'){
@@ -73,8 +68,8 @@ public class Main {
                     int nx = now[0] + dx[j];
                     int ny = now[1] + dy[j];
                     if(nx < 0 || nx >= h || ny < 0 || ny >= w){ return true;}
-                    if(visited[nx][ny] || arr[nx][ny] != '.'){ continue;}
-                    visited[nx][ny] = true;
+                    if(arr[nx][ny] != '.'){ continue;}
+                    arr[nx][ny] = '@';
                     sangen.add(new int[]{nx, ny});
                 }
             }
