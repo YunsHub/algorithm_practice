@@ -14,7 +14,7 @@ public class Main {
         N = Integer.parseInt(br.readLine());
         map = new int[N][N];
         dp = new long[N][N];
-        dp[N - 1][N - 1] = 1;
+        dp[0][0] = 1;
 
         for(int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
@@ -22,30 +22,24 @@ public class Main {
                 map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
-        solve(0, 0);
-        System.out.println(dp[0][0]);
+        solve();
+        System.out.println(dp[N-1][N-1]);
     }
 
-    public static void solve(int x, int y) {
-        if((x != N - 1 || y != N - 1) && map[x][y] == 0){
-            return;
-        }
+    public static void solve() {
+        for(int i=0; i<N; i++){
+            for(int j=0; j<N; j++){
+                if(map[i][j] == 0){ continue;}
+                int right = j + map[i][j];
+                int down = i + map[i][j];
 
-        int nx = x + map[x][y];
-        int ny = y + map[x][y];
-        long sum = 0;
-
-        if(nx < N) {
-            if(dp[nx][y] == 0)
-                solve(nx, y);
-            sum += dp[nx][y];
+                if(right < N){
+                    dp[i][right] += dp[i][j];
+                }
+                if(down < N){
+                    dp[down][j] += dp[i][j];
+                }
+            }
         }
-
-        if(ny < N) {
-            if(dp[x][ny] == 0)
-                solve(x, ny);
-            sum += dp[x][ny];
-        }
-        dp[x][y] = sum;
     }
 }
