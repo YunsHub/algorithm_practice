@@ -26,6 +26,7 @@ public class Main {
 
         for(int k = 0; k < N; k++){ // 경유지
             for(int i = 0; i < N; i++){ // 시작점
+                if(i==k){continue;}
                 for(int j = 0; j < N; j++){ // 끝점
                     arr[i][j] = Math.min(arr[i][j], arr[i][k] + arr[k][j]);
                 }
