@@ -1,3 +1,3 @@
-# algorithm_practice
+# algorithm(Java)
 Java를 이용한 algorithm 문제 풀이
 
