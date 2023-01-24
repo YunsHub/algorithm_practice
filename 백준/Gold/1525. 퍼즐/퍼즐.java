@@ -4,63 +4,53 @@ import java.util.*;
 
 public class Main {
 
-    static Set<String> visited;
+    static Set<Integer> visited;
     static int[] dx = {-1, 0, 1, 0}, dy = {0, 1, 0, -1};
 
-    public static int bfs(char[][] start){
+    public static int bfs(int zeroIdx, int start){
+        if(start == 123456780){
+            return 0;
+        }
+
         int result = 0;
-        Queue<char[][]> q = new LinkedList<>();
-        q.add(start);
-        String s = toString(start);
-        if(s.equals("123456780")){return 0;}
-        visited.add(s);
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[]{zeroIdx, start});
+        visited.add(start);
 
         while(!q.isEmpty()){
             result++;
             for(int i = 0, size = q.size(); i < size; i++){
-                char[][] now = q.poll();
-                int x = 0, y = 0;
-                //deep copy
-                for(int a=0; a<3; a++){
-                    for(int b=0; b<3; b++){
-                        if(now[a][b] == '0'){
-                            x = a;
-                            y = b;
-                        }
-                    }
-                }
-
+                int[] now = q.poll();
+//                System.out.println(now[1]);
+                int x = now[0] / 3;
+                int y = now[0] % 3;
                 for(int j=0; j<4; j++){
                     int nx = x + dx[j];
                     int ny = y + dy[j];
                     if(nx<0 || nx>=3 || ny<0 || ny>=3){ continue;}
-                    char[][] next = new char[3][3];
-                    for(int a = 0; a < 3; a++){
-                        for(int b = 0; b < 3; b++){
-                            next[a][b] = now[a][b];
-                        }
-                    }
-                    next[x][y] = next[nx][ny];
-                    next[nx][ny] = '0';
-                    s = toString(next);
-                    if(visited.contains(s)){ continue;}
-                    if(s.equals("123456780")){ return result;}
-                    visited.add(s);
-                    q.add(next);
+//                    System.out.println("zeroIdx: "+now[0]);
+//                    System.out.println(now[1]);
+                    int next = swap(now[1], now[0], nx*3 + ny);
+//                    System.out.println("nextIdx: "+ (nx*3 + ny));
+//                    System.out.println(next);
+
+                    if(visited.contains(next)){ continue;}
+                    if(next == 123456780){ return result;}
+                    visited.add(next);
+                    q.add(new int[]{nx*3 + ny, next});
                 }
             }
         }
         return -1;
     }
 
-    public static String toString(char[][] input){
-        StringBuilder sb = new StringBuilder();
-        for(int i=0; i<3; i++){
-            for(int j=0; j<3; j++){
-                sb.append(input[i][j]);
-            }
-        }
-        return sb.toString();
+    static final int lenIdx = 8;
+    public static int swap(int num, int zeroIdx, int changeIdx){
+        int su = (int)(num / Math.pow(10, lenIdx - changeIdx) % 10);
+//        System.out.println(su);
+        num -= su * Math.pow(10, lenIdx - changeIdx);
+        num += su * Math.pow(10, lenIdx - zeroIdx);
+        return num;
     }
 
     public static void main(String[] args) throws Exception {
@@ -69,16 +59,19 @@ public class Main {
 
         visited = new HashSet<>();
 
-        char[][] map = new char[3][3];
+        int zeroIdx = 0, input = 0;
         for(int i=0; i<3; i++){
             st = new StringTokenizer(br.readLine());
             for(int j=0; j<3; j++){
-//                input = (input * 10) + (Integer.parseInt(st.nextToken()) + 1);
-                map[i][j] = st.nextToken().charAt(0);
+                int num = Integer.parseInt(st.nextToken());
+                if(num == 0){
+                    zeroIdx = i*3 + j;
+                }
+                input = (input * 10) + num;
             }
         }
 
-        System.out.println(bfs(map));
+        System.out.println(bfs(zeroIdx, input));
 
     }
 }
