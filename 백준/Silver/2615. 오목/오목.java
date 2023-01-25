@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 public class Main {
 
     static char[][] map;
-    static int winner, wx, wy;
+    static boolean find;
     static int[] dx = {-1, 0, 1, 1}, dy = {1, 1, 1, 0};
 
     public static void solve(int x, int y){
@@ -27,45 +27,43 @@ public class Main {
                 if(!check(nx, ny) || color != map[nx][ny]){ break;}
                 cnt++;
             }
-//            System.out.println(cnt);
+
             if(cnt == 5){
-                winner = color - '0';
-                wx = x + 1;
-                wy = y + 1;
+                find = true;
                 return;
             }
         }
     }
 
     public static boolean check(int x, int y){
-        return (0<=x && x<19 && 0<=y && y<19);
+        return (1<=x && x<20 && 1<=y && y<20);
     }
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        map = new char[19][19];
+        map = new char[20][20];
 
-        for(int i=0; i<19; i++){
+        for(int i=1; i<20; i++){
             StringTokenizer st = new StringTokenizer(br.readLine());
-            for(int j=0; j<19; j++){
+            for(int j=1; j<20; j++){
                 map[i][j] = st.nextToken().charAt(0);
             }
         }
 
-        for(int i=0; i<19; i++){
-            for(int j=0; j<19; j++){
+        for(int i=1; i<20; i++){
+            for(int j=1; j<20; j++){
                 if(map[i][j] != '0'){
                     solve(i, j);
-                    if(winner != 0){
-                        System.out.println(winner);
-                        System.out.println(wx + " " + wy);
+                    if(find){
+                        System.out.println(map[i][j]-'0');
+                        System.out.println(i + " " + j);
                         return;
                     }
                 }
             }
         }
 
-        System.out.println(winner);
+        System.out.println(0);
     }
 }
