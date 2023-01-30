@@ -61,9 +61,8 @@ public class Main {
         Arrays.sort(picture);
 
         StringBuilder sb = new StringBuilder();
-        for(int no : picture){
-            if(no > 100){break;}
-            sb.append(no).append(" ");
+        for(int i = 0; i < size; i++){
+            sb.append(picture[i]).append(" ");
         }
         System.out.println(sb);
 
