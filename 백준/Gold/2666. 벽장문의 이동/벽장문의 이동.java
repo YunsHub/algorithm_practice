@@ -24,8 +24,11 @@ public class Main {
     }
 
     public static void dfs(int idx, int l, int r, int sum){
+        if(result <= sum){
+            return;
+        }
         if(idx == M){
-            result = Math.min(result, sum);
+            result = sum;
             return;
         }
 
