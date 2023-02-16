@@ -53,6 +53,6 @@ public class Main {
             }
 
         }
-        return arr[M + 1];
+        return -1;
     }
 }
