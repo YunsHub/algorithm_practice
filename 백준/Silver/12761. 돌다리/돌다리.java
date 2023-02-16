@@ -14,13 +14,8 @@ public class Main {
         B = Integer.parseInt(st.nextToken());
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
-
-//        bfs(N);
-//        for(int i = 0; i < 30; i++) {
-//            System.out.println(arr[i]);
-//        }
+        
         System.out.println(bfs(N));
-
     }
 
     // +1 , -1, +A, +B, -A, -B, *A, *B,
