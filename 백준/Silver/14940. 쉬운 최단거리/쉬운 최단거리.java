@@ -24,12 +24,8 @@ public class Main {
         visited = new boolean[N][M];
         int[] start = new int[1];
 
-
-        for (int[] array : arr) {
-            Arrays.fill(array, -1);
-        }
-
         for (int i = 0; i < N; i++) {
+            Arrays.fill(arr[i], -1);
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < M; j++) {
                 map[i][j] = Integer.parseInt(st.nextToken());
