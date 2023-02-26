@@ -23,9 +23,7 @@ public class Main {
                 max = Math.max(max, day[i]);
                 if(day[i] <= max) {
                     result += max - day[i];
-                } else {
-                    max = day[i];
-                }
+                } 
             }
             sb.append(result).append("\n");
         }
