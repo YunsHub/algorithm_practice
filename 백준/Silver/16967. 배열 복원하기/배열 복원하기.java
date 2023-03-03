@@ -16,31 +16,22 @@ public class Main {
         int[][] Aarr = new int[H][W];
         int[][] Barr = new int[H + X][W + Y];
 
-        for(int i = 0; i < H + X; i++) {
+        for(int i = 0; i < H; i++) {
             st = new StringTokenizer(br.readLine());
-            for(int j = 0; j < W + Y; j++) {
-                Barr[i][j] = Integer.parseInt(st.nextToken());
-            }
-        }
-
-        for(int i = 0; i < H; i++){
             for(int j = 0; j < W; j++) {
+                Barr[i][j] = Integer.parseInt(st.nextToken());
+
                 if(i - X >= 0 && j - Y >= 0) {
                     Aarr[i][j] = Barr[i][j] - Aarr[i - X][j - Y];
                 } else{
                     Aarr[i][j] = Barr[i][j];
                 }
-            }
-        }
-
-        for(int i = 0; i < H; i++){
-            for(int j = 0; j < W; j++) {
                 sb.append(Aarr[i][j]).append(" ");
             }
             sb.append("\n");
         }
+        
         System.out.println(sb);
-
-
+        br.close();
     }
 }
