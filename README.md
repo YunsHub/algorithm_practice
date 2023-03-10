@@ -21,3 +21,4 @@ Java를 이용한 algorithm 문제 풀이
 - 유클리드 호제법
 
 boj 1138
+boj 11723
