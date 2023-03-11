@@ -22,3 +22,4 @@ Java를 이용한 algorithm 문제 풀이
 
 boj 1138
 boj 11723
+boj 15989
