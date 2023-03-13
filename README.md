@@ -19,8 +19,3 @@ Java를 이용한 algorithm 문제 풀이
 ## Other 
 - 에라토스테네스의 체
 - 유클리드 호제법
-
-boj 1138
-boj 11723
-boj 15989
-boj 25757
