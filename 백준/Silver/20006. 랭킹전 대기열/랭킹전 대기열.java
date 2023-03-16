@@ -1,85 +1,67 @@
-import java.io.*;
-    import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.*;
 
+public class Main {
 
-    public class Main {
-        static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    public static class Player implements Comparable<Player>{
+        int level;
+        String name;
+        boolean check;
 
-
-        static class Room
-        {
-            List<User> users = new ArrayList<>();
-
-
+        Player(int level, String name) {
+            this.level = level;
+            this.name = name;
         }
 
-        static public class User implements  Comparable<User>
-        {
-            int level;
-            String nickName;
+        @Override
+        public int compareTo(Player p1) {
+            return name.compareTo(p1.name);
+        }
+    }
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
+        int p = Integer.parseInt(st.nextToken());   // 플레이어 수
+        int m = Integer.parseInt(st.nextToken());   // 방 정원
+        Player[] players = new Player[p];
 
-            public User(int level, String nickName) {
-                this.level = level;
-                this.nickName = nickName;
-            }
-
-
-
-            @Override
-            public int compareTo(User o) {
-                return nickName.compareTo(o.nickName);
-            }
+        for(int i = 0; i < p; i++) {
+            st = new StringTokenizer(br.readLine());
+            int level = Integer.parseInt(st.nextToken());
+            String name = st.nextToken();
+            players[i] = new Player(level, name);
         }
 
-        public static void main(String[] args) throws IOException {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-
-            int p = Integer.parseInt(st.nextToken());
-            int m = Integer.parseInt(st.nextToken());
-            ArrayList<Room> rooms = new ArrayList<>();
-            for(int i=0;i<p;i++)
-            {
-                st = new StringTokenizer(br.readLine());
-                int l= Integer.parseInt(st.nextToken());
-                String  n =st.nextToken();
-                boolean flag= false;
-                for (Room room : rooms) {
-                    if(room.users.size() >=m)
-                        continue;
-                    if(!room.users.isEmpty() && room.users.get(0).level - 10 <= l && l <= room.users.get(0).level + 10)
-                    {
-                        flag= true;
-                        room.users.add(new User(l,n));
+        for(int i = 0; i < p; i++) {
+            ArrayList<Player> room = new ArrayList<>();
+            if(!players[i].check) {
+                for(int j = i; j < p; j++) {
+                    if(room.size() == m) {
                         break;
                     }
+                    int level = players[j].level;
+                    String name = players[j].name;
+                    if(!players[j].check && players[i].level - 10 <= level && players[i].level + 10 >= level) {
+                        players[j].check = true;
+                        room.add(new Player(level, name));
+                    }
                 }
-                if(!flag)
-                {
-                    Room room = new Room();
-                    room.users.add(new User(l,n));
-                    rooms.add(room);
 
+                Collections.sort(room);
+                if(room.size() == m) {
+                    sb.append("Started!").append("\n");
+                } else {
+                    sb.append("Waiting!").append("\n");
                 }
-            }
-
-            for (Room room : rooms) {
-                Collections.sort(room.users);
-                if(room.users.size() == m )
-                    bw.write("Started!\n");
-                else
-                    bw.write("Waiting!\n");
-                for(int i=0;i<room.users.size();i++)
-                {
-                    int level = room.users.get(i).level;
-                    String nickName = room.users.get(i).nickName;
-
-                    bw.write(Integer.toString(level) + " " + nickName+"\n");
+                for(Player player : room) {
+                    sb.append(player.level).append(" ").append(player.name).append("\n");
                 }
             }
-            bw.flush();
 
         }
-
+        System.out.println(sb);
 
     }
+}
