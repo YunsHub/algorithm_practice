@@ -1,42 +1,47 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
     static int N, M;
-    static int[][] map;
-    static int[][] result;
+    static int[][] map, arr;
+    static boolean[][] visited;
+    static int[] dx = {1, 0, -1, 0};
+    static int[] dy = {0, -1, 0, 1};
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
+
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         map = new int[N][M];
-        result = new int[N][M];
-        int sx = 0, sy = 0;
+        arr = new int[N][M];
+        visited = new boolean[N][M];
+        int[] start = new int[1];
 
-        for(int i=0; i<N; i++){
+        for (int i = 0; i < N; i++) {
+            Arrays.fill(arr[i], -1);
             st = new StringTokenizer(br.readLine());
-            for(int j=0; j<M; j++){
-                result[i][j] = -1;
+            for (int j = 0; j < M; j++) {
                 map[i][j] = Integer.parseInt(st.nextToken());
-                if(map[i][j] == 2){
-                    sx = i;
-                    sy = j;
-                }
-                else if(map[i][j] == 0){
-                    result[i][j] = 0;
+                if (map[i][j] == 2) {
+                    start = new int[]{i, j};
+                } else if (map[i][j] == 0) {
+                    arr[i][j] = 0;
                 }
             }
         }
-        bfs(sx, sy);
-        StringBuilder sb = new StringBuilder();
-        for(int i=0; i<N; i++){
-            for(int j=0; j<M; j++){
-                sb.append(result[i][j]).append(" ");
+
+        bfs(start[0], start[1]);
+
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < M; j++) {
+                sb.append(arr[i][j]).append(" ");
             }
             sb.append("\n");
         }
@@ -44,23 +49,28 @@ public class Main {
 
     }
 
-    public static void bfs(int sx, int sy){
-        int[] dx = {-1, 0, 1, 0}, dy = {0, 1, 0, -1};
+    public static void bfs(int x, int y) {
         Queue<int[]> q = new LinkedList<>();
-        result[sx][sy] = 0;
-        q.add(new int[]{sx, sy});
+        q.add(new int[]{x, y});
+        arr[x][y] = 0;
+        int result = 1;
 
-        while(!q.isEmpty()){
-            int[] now = q.poll();
-            for(int i=0; i<4; i++){
-                int nx = now[0] + dx[i];
-                int ny = now[1] + dy[i];
-                if(nx<0 || nx>=N || ny<0 || ny>=M || result[nx][ny] != -1) continue;
+        while (!q.isEmpty()) {
+            for (int i = 0, size = q.size(); i < size; i++) {
+                int[] now = q.poll();
+                for (int j = 0; j < 4; j++) {
+                    int nx = now[0] + dx[j];
+                    int ny = now[1] + dy[j];
 
-                result[nx][ny] = result[now[0]][now[1]] + 1;
-                q.add(new int[]{nx, ny});
-
+                    if (nx < 0 || ny < 0 || nx >= N || ny >= M || visited[nx][ny] || map[nx][ny] != 1) {
+                        continue;
+                    }
+                    visited[nx][ny] = true;
+                    arr[nx][ny] = result;
+                    q.add(new int[]{nx, ny});
+                }
             }
+            result++;
         }
     }
 }
