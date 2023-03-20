@@ -57,10 +57,10 @@ public class Main {
             }
         }
 
-        if(!Arrays.equals(onlight, resultLight)) {
+        if(onlight[N - 1] != resultLight[N - 1]) {
             onClick = Integer.MAX_VALUE;
         }
-        if(!Arrays.equals(offlight, resultLight)) {
+        if(offlight[N - 1] != resultLight[N - 1]) {
             offClick = Integer.MAX_VALUE;
         }
     }
