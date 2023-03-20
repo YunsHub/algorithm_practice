@@ -6,6 +6,7 @@ public class Main {
     static int N;
     static String nowState, resultState;
     static boolean[] onlight, offlight, resultLight;
+    static int onClick, offClick;
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
@@ -21,19 +22,19 @@ public class Main {
             resultLight[i] = resultState.charAt(i) == '0' ? false : true;
         }
 
-        int result1 = onLight();
-        int result2 = offLight();
+        click();
 
-        if(result1 == Integer.MAX_VALUE && result2 == Integer.MAX_VALUE) {
+        if(onClick == Integer.MAX_VALUE && offClick == Integer.MAX_VALUE) {
             System.out.println(-1);
         } else {
-            System.out.println(Math.min(result1, result2));
+            System.out.println(Math.min(onClick, offClick));
         }
 
     }
 
-    public static int onLight() {
-        int onClick = 1;
+    public static void click() {
+        onClick = 1;
+        offClick = 0;
         onlight[0] = !onlight[0];
         onlight[1] = !onlight[1];
         for(int i = 1; i < N; i++) {
@@ -45,19 +46,7 @@ public class Main {
                 }
                 onClick++;
             }
-        }
 
-        if(Arrays.equals(onlight, resultLight)) {
-            return onClick;
-        } else {
-            return Integer.MAX_VALUE;
-        }
-    }
-
-    public static int offLight() {
-        int offClick = 0;
-
-        for(int i = 1; i < N; i++) {
             if(offlight[i - 1] != resultLight[i - 1]) {
                 offlight[i - 1] = !offlight[i - 1];
                 offlight[i] = !offlight[i];
@@ -68,10 +57,11 @@ public class Main {
             }
         }
 
-        if(Arrays.equals(offlight, resultLight)) {
-            return offClick;
-        } else {
-            return Integer.MAX_VALUE;
+        if(!Arrays.equals(onlight, resultLight)) {
+            onClick = Integer.MAX_VALUE;
+        }
+        if(!Arrays.equals(offlight, resultLight)) {
+            offClick = Integer.MAX_VALUE;
         }
     }
 }
