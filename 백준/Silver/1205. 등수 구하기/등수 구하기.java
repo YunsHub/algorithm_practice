@@ -11,7 +11,7 @@ public class Main {
         int N = Integer.parseInt(st.nextToken());
         int tasueScore = Integer.parseInt(st.nextToken());
         int P = Integer.parseInt(st.nextToken());
-        Integer[] rankList = new Integer[N];
+        int[] rankList = new int[N];
         int rank = 1;
 
         if(N == 0) {
@@ -21,7 +21,6 @@ public class Main {
             for (int i = 0; i < N; i++) {
                 rankList[i] = Integer.parseInt(st.nextToken());
             }
-            Arrays.sort(rankList, Collections.reverseOrder());
 
             if(N == P && rankList[rankList.length - 1] >= tasueScore) {
                 rank = -1;
