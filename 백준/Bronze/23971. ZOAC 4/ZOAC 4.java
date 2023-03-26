@@ -10,13 +10,15 @@ public class Main {
         int W = Integer.parseInt(st.nextToken());
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
-        int result = 0;
+        int result1 = 0;
+        int result2 = 0;
         for(int i = 0; i < H; i+= 1 + N) {
-            for(int j = 0; j < W; j+= 1 + M) {
-                result++;
-            }
+            result1++;
         }
-        System.out.println(result);
+        for(int j = 0; j < W; j+= 1 + M) {
+            result2++;
+        }
+        System.out.println(result1 * result2);
 
     }
 }
