@@ -1,43 +1,34 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    static int n;
+    static long[][] a;
 
-        int n = sc.nextInt();
-
-        int[] x = new int[n];
-        int[] a = new int[n];
-
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+        n = Integer.parseInt(br.readLine());
+        a = new long[n][2];
+        long totalPeople = 0;
         for (int i = 0; i < n; i++) {
-            x[i] = sc.nextInt();
-            a[i] = sc.nextInt();
+            st = new StringTokenizer(br.readLine());
+            a[i][0] = Long.parseLong(st.nextToken()); // 위치
+            a[i][1] = Long.parseLong(st.nextToken()); // 인구 수
+            totalPeople += a[i][1];
         }
-
-        // 마을 위치를 기준으로 정렬
-        int[][] villages = new int[n][2];
+        Arrays.sort(a, Comparator.comparingLong(o -> o[0])); // 위치 기준으로 정렬
+        long targetPeople = (totalPeople % 2 == 0) ? totalPeople / 2 : totalPeople / 2 + 1;
+        long currentPeople = 0;
+        long ans = 0;
         for (int i = 0; i < n; i++) {
-            villages[i][0] = x[i];
-            villages[i][1] = a[i];
-        }
-        Arrays.sort(villages, Comparator.comparingInt(o -> o[0]));
-
-        // 중간값을 구해서 출력
-        long totalPopulation = 0;
-        for (int i = 0; i < n; i++) {
-            totalPopulation += villages[i][1];
-        }
-
-        long populationSum = 0;
-        int mid = -1;
-        for (int i = 0; i < n; i++) {
-            populationSum += villages[i][1];
-            if (populationSum >= (totalPopulation + 1) / 2) {
-                mid = i;
+            currentPeople += a[i][1];
+            if (currentPeople >= targetPeople) {
+                ans = a[i][0];
                 break;
             }
         }
-
-        System.out.println(villages[mid][0]);
+        System.out.println(ans);
     }
 }
