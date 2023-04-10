@@ -16,6 +16,6 @@ Java를 이용한 algorithm 문제 풀이
 - Kruskal
 - Prim
 
-## Other 
+## Others
 - 에라토스테네스의 체
 - 유클리드 호제법
