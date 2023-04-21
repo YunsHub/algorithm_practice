@@ -8,13 +8,8 @@ public class Main {
         int cnt = 0;
         String num = "666";
         while (true) {
-            for(int i = 0; i < num.length(); i++) {
-                if(num.charAt(i) == '6') {
-                    if(i + 2 < num.length() && num.charAt(i + 1) == '6' && num.charAt(i + 2) == '6') {
-                        cnt++;
-                        break;
-                    }
-                }
+            if(num.contains("666")){
+                cnt++;
             }
 
             if(N == cnt) {
