@@ -47,28 +47,17 @@ public class Main {
             int roomX = Integer.parseInt(st.nextToken());
             int roomY = Integer.parseInt(st.nextToken());
             rooms[i] = new Room(roomX, roomY);
-//            roomX = Math.max(roomX, max);
-//            for (int j = roomX; j < roomY; j++) {
-//                union(j, j + 1);
-//                // 1 3
-//                // 1 2 / 2 3
-//                // 2 4
-//                // 2 3 / 3 4
-//            }
-//            max = roomY;
         }
+
         Arrays.sort(rooms);
 
         for(int i = 0; i < M; i++) {
             int roomX = rooms[i].x;
             int roomY = rooms[i].y;
             roomX = Math.max(roomX, max);
-            for (int j = roomX; j < roomY; j++) {
-                union(j, j + 1);
-                // 1 3
-                // 1 2 / 2 3
-                // 2 4
-                // 2 3 / 3 4
+            for (int j = roomX; j < roomY; j++) {;
+                union(j, find(j + 1));
+                j = find(j + 1) - 1;
             }
             max = roomY;
         }
@@ -78,12 +67,20 @@ public class Main {
             find(i);
         }
 
-        Set<Integer> set = new HashSet<>();
-        for(int i = 1; i <= N; i++) {
-            set.add(room[i]);
+        int cnt = 0;
+        int num = room[0];
+        for(int i = 0; i <= N; i++) {
+            if(room[i] != num) {
+                cnt++;
+                num = room[i];
+            }
         }
-        System.out.println(set.size());
-        //System.out.println(Arrays.toString(room));
+        System.out.println(cnt);
+//        Set<Integer> set = new HashSet<>();
+//        for(int i = 1; i <= N; i++) {
+//            set.add(room[i]);
+//        }
+//        System.out.println(set.size());
     }
 
     public static void union(int a, int b) {
