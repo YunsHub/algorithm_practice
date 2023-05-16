@@ -16,21 +16,7 @@ public class Main {
             width = Math.min(gcd(dis1, dis2), width);
             dis1 = dis2;
         }
-        int cnt = 0;
-        int jump = num[0];
-        for(int i = 0; i < N; i++) {
-            while (true) {
-                if(num[i] == jump) {
-                    jump += width;
-                    break;
-                } else {
-                    jump += width;
-                    cnt++;
-                }
-            }
-        }
-
-        System.out.println(cnt);
+        System.out.println((num[N - 1] - num[0]) / width - (N - 1));
 
     }
     public static int gcd(int a, int b) {
