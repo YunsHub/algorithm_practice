@@ -25,7 +25,6 @@ class Solution {
             downArrow(minX + 1, maxY, maxX);
             leftArrow(maxX, maxY - 1, minY);
             topArrow(maxX - 1, minY, minX);
-            //System.out.println(Arrays.deepToString(base));
             answer[idx++] = min;
         }
         
