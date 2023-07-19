@@ -7,17 +7,13 @@ class Solution {
             int first = commands[index][0] - 1;
             int last = commands[index][1];
             int select = commands[index][2] - 1;
-            int[] temp = new int[last - first];
-            int tempIndex = 0;
-            for(int num = first; num < last; num++) {
-                temp[tempIndex++] = array[num];
-            }
+            int[] temp = Arrays.copyOfRange(array, first, last);                        
             Arrays.sort(temp);
             answer[idx++] = temp[select];
         }
         
-        
-        
         return answer;
+            
+            
     }
 }
