@@ -1,18 +1,19 @@
+
 import java.util.*;
 
 public class Solution {
     public int[] solution(int []arr) {
-        Stack<Integer> number = new Stack<>();
-        for(int index = 0; index < arr.length; index++) {
-            if(!number.isEmpty() && number.peek() == arr[index]) continue;
-            number.push(arr[index]);
+        ArrayList<Integer> tempList = new ArrayList<Integer>();
+        int preNum = 10;
+        for(int num : arr) {
+            if(preNum != num)
+                tempList.add(num);
+            preNum = num;
+        }       
+        int[] answer = new int[tempList.size()];
+        for(int i=0; i<answer.length; i++) {
+            answer[i] = tempList.get(i).intValue();
         }
-        int idx = number.size() - 1;
-        int[] answer = new int[number.size()];
-        while(!number.isEmpty()) {
-            answer[idx--] = number.pop();
-        }
-
         return answer;
     }
 }
