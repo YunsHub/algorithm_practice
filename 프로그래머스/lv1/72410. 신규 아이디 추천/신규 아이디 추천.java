@@ -24,7 +24,7 @@ class Solution {
         
         // 4단계 처음, 끝 . 제거
         if(sb.charAt(0) == '.') sb.deleteCharAt(0);
-        if(sb.length() > 1 && sb.charAt(sb.length() - 1) == '.') sb.deleteCharAt(sb.length() - 1);
+        if(sb.length() >= 1 && sb.charAt(sb.length() - 1) == '.') sb.deleteCharAt(sb.length() - 1);
         
         // 5단계 빈 문자열이라면 "a"대입
         if(sb.toString().equals("")) sb.append("a");
