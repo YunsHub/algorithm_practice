@@ -7,6 +7,9 @@ class Solution {
             this.weight = weight;
             this.second = second;
         }
+        public void pass() {
+            second++;
+        }
     }
     public int solution(int bridge_length, int weight, int[] truck_weights) {
         // Queue 사용
@@ -31,11 +34,10 @@ class Solution {
                 sum += truck_weights[truckIdx++];
             }
             
-            // 트럭이 얼마나 오래 있었는지
-            for(int size = 0; size < truckQueue.size(); size++) {
-                Truck truck = truckQueue.poll();
-                truckQueue.add(new Truck(truck.weight, truck.second + 1));
-            }            
+            // 트럭이 얼마나 오래 
+            for(Truck truck : truckQueue) {
+                truck.pass();
+            }
             answer++;
         }
         
