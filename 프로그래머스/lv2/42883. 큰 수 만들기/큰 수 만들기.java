@@ -9,17 +9,19 @@ class Solution {
             while(!stack.isEmpty() && stack.peek() < num && k-- > 0) {
                 stack.pop();
             }
-            stack.push(num);
-            
+            stack.push(num);            
         }
-        for (int i=0; i<result.length; i++) {
-            result[i] = stack.get(i);
+        while(k-- > 0) {
+                stack.pop();
+            }
+        while(!stack.isEmpty()) {
+            sb.insert(0, stack.pop());
         }
-        return new String(result);
-        // while(!stack.isEmpty()) {
-        //     sb.insert(0, stack.pop());
+        return sb.toString();
+        // for (int i=0; i<result.length; i++) {
+        //     result[i] = stack.get(i);
         // }
-        // return sb.toString();
+        // return new String(result);
 //         StringBuilder sb = new StringBuilder();
 //         int index = 0;
         
