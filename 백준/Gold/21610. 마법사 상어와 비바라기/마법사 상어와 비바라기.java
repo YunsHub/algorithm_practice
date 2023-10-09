@@ -1,95 +1,123 @@
-import sun.awt.image.ImageWatched;
-
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Main {
-    static int N, M, result;
-    static int[][] arr;
-    static boolean[][] cloud;
-    //static ArrayList<int[]> list;
-    static int[] dx = {0, -1, -1, -1, 0, 1, 1, 1};
-    static int[] dy = {-1, -1, 0, 1, 1, 1, 0, -1};
-
+    // ←, ↖, ↑, ↗, →, ↘, ↓, ↙
+    public static int[] dx = {0, -1, -1, -1, 0, 1, 1, 1};
+    public static int[] dy = {-1, -1, 0, 1, 1, 1, 0, -1};
+    public static int n;
+    public static int[][] map;
+    public static boolean[][] visited;
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+        map = new int[n][n];
+        visited = new boolean[n][n];
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-        arr = new int[N][N];
-        cloud = new boolean[N][N];
-        cloud[N-1][0] = cloud[N-1][1] = cloud[N-2][0] = cloud[N-2][1] = true;
+        // 구름 초기화
+        visited[n - 1][0] = true;
+        visited[n - 1][1] = true;
+        visited[n - 2][0] = true;
+        visited[n - 2][1] = true;
 
-        for(int i = 0; i < N; i++) {
+        for(int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
-            for(int j = 0; j < N; j++){
-                arr[i][j] = Integer.parseInt(st.nextToken());
+            for(int j = 0; j < n; j++) {
+                map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
-        for(int i = 0; i < M; i++) {
+        for(int i = 0; i < m ;i++) {
             st = new StringTokenizer(br.readLine());
-            int d = Integer.parseInt(st.nextToken());
-            int s = Integer.parseInt(st.nextToken());
-
-            simulation(d - 1 ,s % N);
+            int dir = Integer.parseInt(st.nextToken()) - 1;
+            int dis = Integer.parseInt(st.nextToken());
+            simulation(dir, dis % n);
         }
 
-        result = 0;
-        for(int i = 0; i < N; i++) {
-            for(int j = 0; j < N; j++){
-                result += arr[i][j];
+        int sum = 0;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                sum += map[i][j];
             }
         }
+        System.out.println(sum);
 
-        System.out.println(result);
     }
-    public static void simulation(int direction, int speed) {
 
-        // 1. 모든 구름이 d방향으로 s칸 이동한다.
-        boolean next[][] = new boolean[N][N];
-        for(int i=0; i<N; i++){
-            for(int j=0; j<N; j++){
-                if(cloud[i][j]){
-                    int nx = (N + i + dx[direction] * speed) % N;
-                    int ny = (N + j + dy[direction] * speed) % N;
-                    next[nx][ny] = true;
-                    arr[nx][ny] ++; // 2.각 구름에서 비가 내려 구름이 있는 칸의 바구니에 저장된 물의 양이 1 증가한다.
+    public static void simulation(int dir, int dis) {
+        // 1. 구름이 이동
+        // 2. 구름이 이동 후 각 칸의 물의 양 + 1
+        findCloud(dir, dis);
+        // 3. 구름이 사라짐
+        // 4. 구름이 사라진 칸의 대각선 거리 1인 칸의 물이 있으면 + 칸 수
+        addWater();
+        // 5. 모든 칸에서 물의 양이 2이상이면 구름 생성, 구름이 사라진 칸은 제외
+        addCloud();
+    }
+
+    public static void findCloud(int dir, int dis) {
+        boolean[][] nextVisited = new boolean[n][n];
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                if(visited[i][j]) {
+                    moveCloud(i, j, dir, dis, nextVisited);
                 }
             }
         }
-        cloud = next;
+        visited = nextVisited;
+    }
 
-        // 4. 2에서 물이 증가한 칸 (r, c)에 물복사버그 마법을 시전한다. 물복사버그 마법을 사용하면, 대각선 방향으로 거리가 1인 칸에 물이 있는 바구니의 수만큼 (r, c)에 있는 바구니의 물이 양이 증가한다.
-        for(int i=0; i<N; i++){
-            for(int j=0; j<N; j++){
-                if(cloud[i][j]){
-                    for(int d = 1; d < 8; d+=2){
-                        int nx = i + dx[d];
-                        int ny = j + dy[d];
-                        if(nx < 0 || ny < 0 || nx >= N || ny >= N) {continue;}
-                        if(arr[nx][ny] > 0) {
-                            arr[i][j]++;
-                        }
-                    }
-                }
-            }
-        }
+    public static void moveCloud(int x, int y, int dir, int dis, boolean[][] nextVisited) {
+        int nextX = (n + x + (dx[dir] * dis)) % n;
+        int nextY = (n + y + (dy[dir] * dis)) % n;
+        nextVisited[nextX][nextY] = true;
+        map[nextX][nextY]++;
+    }
 
-        // 3. 구름이 모두 사라진다.
-        // 5. 바구니에 저장된 물의 양이 2 이상인 모든 칸에 구름이 생기고, 물의 양이 2 줄어든다. 이때 구름이 생기는 칸은 3에서 구름이 사라진 칸이 아니어야 한다.
-        for(int i = 0; i < N; i++) {
-            for(int j = 0; j < N; j++) {
-                if(cloud[i][j]){
-                    cloud[i][j] = false;
-                }
-                else if(arr[i][j] >= 2) {
-                    arr[i][j] -= 2;
-                    cloud[i][j] = true;
+    public static void addWater() {
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                if(visited[i][j]) {
+                    searchDir(i, j);
                 }
             }
         }
     }
+
+    public static void searchDir(int x, int y) {
+        for(int i = 1; i < 8; i+=2) {
+            int nextX = x + dx[i];
+            int nextY = y + dy[i];
+            if(isRange(nextX, nextY) && map[nextX][nextY] > 0) {
+                map[x][y]++;
+            }
+        }
+    }
+
+    public static boolean isRange(int x, int y) {
+        return x >= 0 && y >= 0 && x < n && y < n;
+    }
+
+    public static void addCloud() {
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                if(visited[i][j]) visited[i][j] = false;
+                else if(map[i][j] >= 2) {
+                    visited[i][j] = true;
+                    map[i][j] -= 2;
+                }
+            }
+        }
+    }
+
+
+
+
+
 }
