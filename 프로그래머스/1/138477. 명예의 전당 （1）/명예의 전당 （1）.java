@@ -6,14 +6,8 @@ class Solution {
         int ansIdx = 0;
         
         for(int s : score) {
-            if(pq.size() < k) {
-                pq.add(s);                
-            } else {
-                if(pq.peek() < s) {
-                    pq.poll();
-                    pq.add(s);
-                }
-            }
+            pq.add(s);
+            if(pq.size() > k) pq.poll();
             answer[ansIdx++] = pq.peek();        
         }
         
