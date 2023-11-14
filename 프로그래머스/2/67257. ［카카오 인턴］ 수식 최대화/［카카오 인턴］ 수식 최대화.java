@@ -4,11 +4,9 @@ class Solution {
     
     static long answer = 0;
     static char[] op = new char[3];
-    static boolean[] visited= new boolean[3];
     
-    public long solution(String expression) {        
-        
-        permutation(expression, "+-*", 0, 0);
+    public long solution(String expression) {
+        permutation(expression, "+-*", 0, 0, 0);
         return answer;
     }
     
@@ -33,18 +31,16 @@ class Solution {
         return temp;        
     }
     
-    public void permutation(String expression, String ops, int idx, int cnt) {
+    public void permutation(String expression, String ops, int idx, int cnt, int visited) {
         if(cnt == 3) {
             long temp = Math.abs(calculation(0, expression));
             answer = Math.max(answer, temp);
             return;
         }
         for(int i = 0; i < ops.length(); i++) {
-            if(!visited[i]) {
-                visited[i] = true;
+            if((visited & (1<<i)) == 0) {
                 op[cnt] = ops.charAt(i);
-                permutation(expression, ops, idx + 1, cnt + 1);
-                visited[i] = false;
+                permutation(expression, ops, idx + 1, cnt + 1, visited | (1<<i));
             }
         }
     }
