@@ -6,7 +6,7 @@ public class Main {
     public static int answer = 0;
     public static int[][] map;
     public static boolean[][] visited;
-    public static int n,m;
+    public static int n,m,max;
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -14,11 +14,13 @@ public class Main {
         m = Integer.parseInt(st.nextToken());
         map = new int[n][m];
         visited = new boolean[n][m];
+        max = 0;
 
         for(int i=0; i<n; i++) {
             st = new StringTokenizer(br.readLine());
             for(int j=0; j<m; j++) {
                 map[i][j] = Integer.parseInt(st.nextToken());
+                max = Math.max(max, map[i][j]);
             }
         }
 
@@ -38,6 +40,8 @@ public class Main {
             answer = Math.max(answer, sum);
             return;
         }
+
+        if(answer >= sum + max * (4-depth)) return;
 
         visited[x][y] = true;
 
