@@ -16,26 +16,29 @@ class Solution {
         int answerIdx = 0;
         int len = plans.length;
         String[] answer = new String[len];
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        // DateFormat dateFormat = new SimpleDateFormat("HH:mm");
         Stack<Plan> s = new Stack<>();
         
         Arrays.sort(plans, (o1, o2) -> {
             return o1[1].compareTo(o2[1]);
         });
-        System.out.println(Arrays.deepToString(plans));
+        System.out.println(Arrays.deepToString(plans));        
         
         for(int i = 0; i < len-1; i++) {
             int playTime = Integer.parseInt(plans[i][2]);
             
-            Date d1  = dateFormat.parse(plans[i][1]);
-            Date d2  = dateFormat.parse(plans[i+1][1]);
+//             Date d1  = dateFormat.parse(plans[i][1]);
+//             Date d2  = dateFormat.parse(plans[i+1][1]);
             
-            long timeMil1 = d1.getTime();
-            long timeMil2 = d2.getTime();
-            long diff = timeMil2 - timeMil1;
+//             long timeMil1 = d1.getTime();
+//             long timeMil2 = d2.getTime();
+//             long diff = timeMil2 - timeMil1;
             
-            long diffTime = diff / (1000*60);
-            
+//             long diffTime = diff / (1000*60);
+            int d1 = timeToMinute(plans[i][1]);
+            int d2 = timeToMinute(plans[i+1][1]);
+            int diffTime = d2 - d1;
+            System.out.println(diffTime);
             if(diffTime >= playTime) {
                 answer[answerIdx++] = plans[i][0];
                 int endTime = (int) diffTime - playTime;
@@ -63,5 +66,10 @@ class Solution {
         
         
         return answer;
+    }
+    
+    public int timeToMinute(String time) {
+        StringTokenizer st = new StringTokenizer(time, ":");
+        return Integer.parseInt(st.nextToken()) * 60 + Integer.parseInt(st.nextToken());
     }
 }
