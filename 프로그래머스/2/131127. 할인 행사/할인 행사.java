@@ -1,28 +1,63 @@
 import java.util.*;
 
 class Solution {
-        public int solution(String[] want, int[] number, String[] discount) {
-            int answer = 0;
-            int left = 0;
-            int right = 9;
-            Map<String, Integer> map = new HashMap<>();
-            for(int i =0;i<10;i++) map.put(discount[i], map.getOrDefault(discount[i],0)+1);
-            while(right < discount.length){
-                if(check(map,want,number)) answer++;
 
-                right++;
-                if(right < discount.length)
-                    map.put(discount[right], map.getOrDefault(discount[right],0)+1);
-                map.put(discount[left],map.get(discount[left])-1);
-                left++;
-            }
+    Map<String, Integer> wantMap; 
 
-            return answer;
+    public int solution(String[] want, int[] number, String[] discount) {
+        // want[]:품목, number[]:품목별 개수, discount[]:할인품목
+        // number의 총합은 10
+        // 원하는 제품을 모두 할인 받을 수 있는 회원등록 날짜의 총 일수를 return
+
+        // 각 want와 number를 hashMap<String, Integer>에 저장
+        // discount[]에서 0~10번까지 품목별 number-- 저장
+        // hashMap number가 모두 0이면 answer++ 
+        // 0번 11번 index가 같으면 answer++
+        // 아니면 0번 index는 +1, 11번 index는 -1
+        // number 0인지 검사 
+
+        // init
+        int answer = 0;
+        wantMap = new HashMap<>();
+
+        for(int i=0; i<want.length; i++) {
+            wantMap.put(want[i], number[i]);
         }
-        private boolean check(Map<String,Integer> map,String[] want,int[] number){
-            for(int i =0;i<want.length;i++){
-                if(map.getOrDefault(want[i],0) != number[i]) return false;
-            }
-            return true;
-        }
+
+        // cal
+        for(int i=0; i<discount.length; i++) {
+            String food = discount[i];
+
+            if(i >= 10) {
+                String prevFood = discount[i-10];
+                if(wantMap.containsKey(prevFood)) {
+                    wantMap.put(prevFood, wantMap.get(prevFood) + 1);            
+                }                    
+            } 
+
+            if(wantMap.containsKey(food)) {                
+                wantMap.put(food, wantMap.get(food) - 1);
+            }            
+
+            if(isAllDiscount()) {
+                answer++;
+            }                    
+        }        
+
+        // wantMap.forEach((key, value) -> {
+        //     System.out.println(key + " " + value);
+        // });            
+
+        return answer;
     }
+
+    public boolean isAllDiscount() {
+        for(String key : wantMap.keySet()) {
+            if(wantMap.get(key) != 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
