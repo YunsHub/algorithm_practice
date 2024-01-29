@@ -1,27 +1,22 @@
-class Solution {
-    
-    // 1부터 number까지 약수의 개수 구하기
-    
+class Solution {    
     public int solution(int number, int limit, int power) {
-    
+
         // init
         int answer = 0;        
+        int[] attack = new int[number+1];
         
-        // 약수 개수 구하기
+        // 1부터 number까지 배수 저장
         for(int i=1; i<=number; i++) {
-            answer += getAttackNum(i, limit, power);
+            for(int j=1; j<=number/i; j++) {
+                attack[i*j]++;
+            }
         }
         
-        return answer;
-    }
-    
-    public int getAttackNum(int number, int limit, int power) {
-        int cnt = 0;
-        for(int i=1; i*i<=number; i++) {
-            if(i*i == number) cnt++;
-            else if(number%i == 0) cnt+=2;
+        for(int i=1; i<=number; i++) {
+            if(attack[i] > limit) answer += power;
+            else answer += attack[i];
         }
-        if(cnt > limit) return power;
-        return cnt;
+
+        return answer;
     }
 }
