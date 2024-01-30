@@ -15,19 +15,19 @@ class Solution {
         int[] answer = new int[len];
         boolean[][] reportArr = new boolean[len][len];
         boolean[] reportId = new boolean[len];
-        
+
         // init
         for(int i=0; i<len; i++) {
             idMap.put(id_list[i], i);
         }
-        
+
         for(String id : report) {
             StringTokenizer st = new StringTokenizer(id);
             int reporter = idMap.get(st.nextToken());
             int reported = idMap.get(st.nextToken());
             reportArr[reporter][reported] = true;
         }
-        
+
         // 정지 아이디
         for(int i=0; i<len; i++) {
             int reportCnt = 0;
@@ -36,10 +36,10 @@ class Solution {
                     reportCnt++;
                 }
             }
-            
+
             if(reportCnt >= k) reportId[i] = true;
         }
-        
+
         // 정지 신고 성공
         for(int i=0; i<len; i++) {
             int cnt = 0;
@@ -48,10 +48,10 @@ class Solution {
                     cnt++;
                 }
             }
-            
+
             answer[i] = cnt;
         }
-        
+
         return answer;
     }
 }
