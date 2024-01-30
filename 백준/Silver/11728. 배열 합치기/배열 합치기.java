@@ -1,30 +1,45 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         StringBuilder sb = new StringBuilder();
+
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
-        int[] num = new int[N + M];
+        int[] A = new int[N];
+        int[] B = new int[M];
+        
         st = new StringTokenizer(br.readLine());
         for(int i = 0; i < N; i++) {
-            num[i] = Integer.parseInt(st.nextToken());
+            A[i] = Integer.parseInt(st.nextToken());
         }
-        st = new StringTokenizer(br.readLine());
-        for(int j = N; j < N + M; j++) {
-            num[j] = Integer.parseInt(st.nextToken());
-        }
-        Arrays.sort(num);
 
-        for(int n : num) {
-            sb.append(n).append(" ");
+        st = new StringTokenizer(br.readLine());
+        for(int i = 0; i < M; i++) {
+            B[i] = Integer.parseInt(st.nextToken());
         }
-        System.out.println(sb);
+        
+        int Astart = 0, Bstart = 0;
+
+        while(Astart < N || Bstart < M) {
+            int num = 0;
+            if(Astart == N) {
+                num = B[Bstart++];
+            } else if(Bstart == M) {
+                num = A[Astart++];
+            } else if(A[Astart] < B[Bstart]) {
+                num = A[Astart++];
+            } else {
+                num = B[Bstart++];
+            }
+            
+            sb.append(num).append(" ");
+        }
+
+        System.out.println(sb.toString());
 
     }
 }
