@@ -7,9 +7,14 @@ class Solution {
     int[] dx = {1, 0, 0, -1};
     int[] dy = {0, -1, 1, 0};    
     Map<Integer, String> map = new HashMap<>();
-    String answer = "impossible";
+    String answer = "";
     
     public String solution(int n, int m, int x, int y, int r, int c, int k) {                
+        
+        // 불가능
+        int diffX = Math.abs(x-r);
+        int diffY = Math.abs(y-c);
+        if(diffX + diffY > k || (diffX+diffY) % 2 != k % 2) return "impossible";
         
         // init
         N = n;
@@ -27,13 +32,11 @@ class Solution {
     
     
     public boolean dfs(StringBuilder sb, int depth, int k, int x, int y, int r, int c) {
-        int disX = Math.abs(x - r);
-        int disY = Math.abs(y - c);        
-        if(disX + disY > k - depth) return false;        
-        
+        if(!check(x, y, r, c, k, depth)) return false;
+            
         if(depth == k) {                 
             if(x == r && y == c) answer = sb.toString();
-            return true;
+            return false;
         }
               
         for(int dir=0; dir<DIR; dir++) {
@@ -43,9 +46,16 @@ class Solution {
             if(!isRange(nx, ny)) continue;
             sb.append(map.get(dir));
             if(dfs(sb, depth+1, k, nx, ny, r, c)) break;
-            sb.deleteCharAt(sb.length()-1);
-        }                
+            sb.deleteCharAt(sb.length() - 1);
+        }           
         
+        return true;
+    }
+    
+    public boolean check(int x, int y, int r, int c, int k, int depth) {
+        int diffX = Math.abs(x - r);
+        int diffY = Math.abs(y - c);        
+        if(diffX + diffY > k - depth) return false;  
         return true;
     }
     
