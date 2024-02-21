@@ -18,7 +18,7 @@ class Solution {
                     String divStr = s.substring(i, i+len);
                     if(temp.equals(divStr)) {
                         cnt++;
-                        if(digit != Integer.toString(cnt).length()) {
+                        if(digit != String.valueOf(cnt).length()) {
                             digit++;
                             nowLen++;                        
                         }
