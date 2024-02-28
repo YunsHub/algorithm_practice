@@ -1,8 +1,10 @@
 import java.util.*;
 
 class Solution {    
-        // 스택 활용
-        // stack.get() 사용
+    // 스택 활용
+    // stack.get() 사용
+
+    // 배열 활용
     public int solution(int[] ingredient) {
         int answer = 0;            
         Stack<Integer> stack = new Stack<>();
