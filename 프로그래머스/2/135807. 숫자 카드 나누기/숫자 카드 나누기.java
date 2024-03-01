@@ -3,8 +3,6 @@ import java.util.*;
 class Solution {
     public int solution(int[] arrayA, int[] arrayB) {
         int answer = 0;
-        Arrays.sort(arrayA);
-        Arrays.sort(arrayB);
         
         int a = getNum(arrayA, arrayB);
         int b = getNum(arrayB, arrayA);
@@ -15,7 +13,7 @@ class Solution {
     public int getNum(int[] arrayA, int[] arrayB) {
         List<Integer> list = new ArrayList<>();
         
-        for(int i=arrayA[0]; i>=2; i--) {
+        for(int i=arrayA[0]; i>=2; i--) {//
             boolean check = true;
             
             for(int n : arrayA) {
@@ -33,7 +31,6 @@ class Solution {
     public int checkNum(List<Integer> list, int[] arrayB) {
         
         for(int n : list) {
-            System.out.println(n);
             boolean check = true;
             for(int i=0; i<arrayB.length; i++) {
                 if(arrayB[i] % n == 0) {
