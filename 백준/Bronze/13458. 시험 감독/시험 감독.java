@@ -1,37 +1,34 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.io.*;
 
-public class Main {
-    public static void main(String[] args) throws IOException {
+class Main
+{
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
+        int N = Integer.parseInt(br.readLine());
+        int[] rooms = new int[N];
 
-        StringTokenizer st;
-
-        int[] arr = new int[n];
-        st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i++) {
+            rooms[i] = Integer.parseInt(st.nextToken());
         }
 
         st = new StringTokenizer(br.readLine());
-        int b = Integer.parseInt(st.nextToken());
-        int c = Integer.parseInt(st.nextToken());
+        int A = Integer.parseInt(st.nextToken());
+        int B = Integer.parseInt(st.nextToken());
 
-        long answer = 0;
+        long answer = rooms.length;
+        for (int i = 0; i < N; i++) {
+            rooms[i] -= A;
+        }
 
-        answer += n;
-
-        for (int i = 0; i < n; i++) {
-            arr[i] -= b;
-            if (arr[i] <= 0) continue;
-            answer += arr[i] / c;
-            if (arr[i] % c != 0) {
-                answer++;
-            }
+        for(int room : rooms) {
+            if(room <= 0) continue;
+            answer += (room/B);
+            if(room%B != 0) answer++;
         }
         System.out.println(answer);
     }
+
+
 }
