@@ -6,6 +6,7 @@ class Main
     public static int[] dx = {0, 1, 0, -1};
     public static int[] dy = {1, 0, -1, 0};
     public static char[][] board;
+    public static boolean[][][][] visited;
     public static int N, M;
     public static int answer = Integer.MAX_VALUE;
 
@@ -34,6 +35,7 @@ class Main
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         board = new char[N][M];
+        visited = new boolean[N][M][N][M];
 
         Ball redBall = null;
         Ball blueBall = null;
@@ -56,31 +58,12 @@ class Main
 
         permutation(0, redBall, blueBall, hole);
 
-//        simulation(2, redBall, 'R');
-//        simulation(2, blueBall, 'B');
-//        simulation(1, redBall, 'R');
-//        simulation(1, blueBall, 'B');
-//        simulation(0, redBall, 'R');
-//        simulation(0, blueBall, 'B');
-//        simulation(1, redBall, 'R');
-//        simulation(1, blueBall, 'B');
-//        simulation(2, redBall, 'R');
-//        simulation(2, blueBall, 'B');
-//
-
 
         System.out.println(answer == Integer.MAX_VALUE ? -1 : answer);
     }
 
 
     public static void permutation(int cnt, Ball redBall, Ball blueBall, int[] hole) {
-//        for (int i = 0; i < N; i++) {
-//            for (int j = 0; j < M; j++) {
-//                System.out.print(board[i][j] + " ");
-//            }
-//            System.out.println();
-//        }
-//        System.out.println();
         if(cnt > 10){
             // 10번 이하 or 빨간 구슬 성공
             return;
@@ -97,40 +80,45 @@ class Main
             return;
         }
 
-
-
         int rx = redBall.x;
         int ry = redBall.y;
         int bx = blueBall.x;
         int by = blueBall.y;
 
         for(int i = 0; i < 4; i++) {
-            getOrder(i, redBall, blueBall);
-            if(redBall.order == 1) {
-                simulation(i, redBall, 'R');
-                simulation(i, blueBall, 'B');
-            } else {
-                simulation(i, blueBall, 'B');
-                simulation(i, redBall, 'R');
+            if(!visited[redBall.x][redBall.y][blueBall.x][blueBall.y]) {
+                visited[redBall.x][redBall.y][blueBall.x][blueBall.y] = true;
+                getOrder(i, redBall, blueBall);
+                if(redBall.order == 1) {
+                    simulation(i, redBall, 'R');
+                    simulation(i, blueBall, 'B');
+                } else {
+                    simulation(i, blueBall, 'B');
+                    simulation(i, redBall, 'R');
+                }
+
+                permutation(cnt+1, redBall, blueBall, hole);
+
+                if(board[redBall.x][redBall.y] == 'O') {
+                    board[redBall.x][redBall.y] = 'O';
+                } else {
+                    board[redBall.x][redBall.y] = '.';
+                }
+
+                if(board[blueBall.x][blueBall.y] == 'O') {
+                    board[blueBall.x][blueBall.y] = 'O';
+                } else {
+                    board[blueBall.x][blueBall.y] = '.';
+                }
+
+                redBall.moveTo(rx, ry);
+                blueBall.moveTo(bx, by);
+                board[redBall.x][redBall.y] = 'R';
+                board[blueBall.x][blueBall.y] = 'B';
+
+                visited[redBall.x][redBall.y][blueBall.x][blueBall.y] = false;
             }
 
-            permutation(cnt+1, redBall, blueBall, hole);
-            if(board[redBall.x][redBall.y] == 'O') {
-                board[redBall.x][redBall.y] = 'O';
-            } else {
-                board[redBall.x][redBall.y] = '.';
-            }
-
-            if(board[blueBall.x][blueBall.y] == 'O') {
-                board[blueBall.x][blueBall.y] = 'O';
-            } else {
-                board[blueBall.x][blueBall.y] = '.';
-            }
-
-            redBall.moveTo(rx, ry);
-            blueBall.moveTo(bx, by);
-            board[redBall.x][redBall.y] = 'R';
-            board[blueBall.x][blueBall.y] = 'B';
 
         }
     }
